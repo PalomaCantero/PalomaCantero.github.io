@@ -1,0 +1,120 @@
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" (click)="unshowProducts()">Logo</a>
+      <form class="d-flex">
+        <input name="filtro" class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
+          [(ngModel)]="input_value" (ngModelChange)="changeFunc();unshowProducts();">
+        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+        <i class="fa fa-user-o btn" style="font-size:30px;color: white;margin-left: 1rem; padding-right: 0.7rem;"
+          (click)="showLogin();"></i>
+      </form>
+
+    </div>
+  </nav>
+
+  <div *ngIf="show=='login'" style="display: flex;justify-content: center;">
+    <form>
+      <div class="form-group" style="margin-top: 2rem; ">
+        <label for="exampleInputEmail1">Correo</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="Enter email">
+       
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Contraseña</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      </div>
+      <div class="form-group" (click)="showRegister()">
+        <a class="btn" style="color: rgb(158, 158, 250);text-decoration:underline;margin-bottom: 1rem;">Register</a>
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="unshowProducts()">Login</button>
+    </form>
+
+  </div>
+
+  <div *ngIf="show=='register'" style="display: flex;justify-content: center;">
+    <form>
+      <div class="form-group" style="margin-top:2rem;">
+        <label for="exampleInputPassword22">Contraseña</label>
+        <input type="name" class="form-control" id="exampleInputPassword22" placeholder="Nombre">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Correo</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="Enter email">
+
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Repetir Correo</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Contraseña</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword2">Confirmar Contraseña</label>
+        <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+      </div>
+      <div class="form-group" (click)="showRegister()">
+        <a class="btn" (click)="showLogin()" style="color: rgb(158, 158, 250);text-decoration:underline;margin-bottom: 1rem;">¿Ya tienes
+          cuenta?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="unshowProducts()">Registrar</button>
+    </form>
+
+  </div>
+
+  <content *ngIf="show=='home'" id="content">
+    <div *ngFor="let product of toShowProducto" class="card border-dark mb-3 bg-light" style="width: 18rem;">
+      <img class="card-img-top" src='{{"../../assets/images/"+product.id+".jpg"}}' alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+
+        <div class="btn btn-primary bg-dark" (click)="showProduct(product.id)">Ver Detalle</div>
+      </div>
+    </div>
+  </content>
+
+  <div *ngIf="show=='detail'" style="width: 100%;">
+    <div id="d_cab">
+      <img id="d_img" src='{{"../../assets/images/"+PRODUCTOS[selectedProduct].id+".jpg"}}' alt="">
+
+      <div id="desc">
+        <h1 class="h1">{{PRODUCTOS[selectedProduct].name}}</h1>
+        <p>Precio general: {{PRODUCTOS[selectedProduct].precio_promedio}}</p>
+        <p>Mínimo histórico:{{PRODUCTOS[selectedProduct].minimo_historico}}</p>
+      </div>
+    </div>
+
+    <div style="width: 100%; display: flex; align-items: center;flex-direction: column;margin-bottom: 4rem;margin-top: 1rem;">
+      
+      <h1 style="margin-top: 2rem;">RECOMENDACIONES</h1>
+      <table class="" style="margin-top: none;padding-top: none;">
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Confianza</th>
+          <th>Envío</th>
+          <th>Tiempo Envío</th>
+          <th>URL</th>
+        </tr>
+
+        <tr *ngFor="let proveedores of PROVEEDORES">
+          <td>{{proveedores.name}}</td>
+          <td>{{getRandomArbitrary(PRODUCTOS[selectedProduct].minimo_historico,
+            PRODUCTOS[selectedProduct].precio_promedio) | currency:'EUR':'symbol':'0.2-2'}} </td>
+
+          <td>{{proveedores.confianza}}</td>
+          <td>{{proveedores.envio}}</td>
+          <td>{{proveedores.tiempo_envio}}</td>
+          <td><a class="btn btn-primary bg-dark" href="{{proveedores.link}}">Ir a la página</a></td>
+        </tr>
+      </table>
+    </div>
+
+
+  </div>
+
